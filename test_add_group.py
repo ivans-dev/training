@@ -4,8 +4,9 @@ import unittest
 from selenium import webdriver
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import NoSuchElementException
-from contact import Contact
 from group import Group
+from contact import Contact
+from address import Address
 
 
 class TestABook(unittest.TestCase):
@@ -32,14 +33,14 @@ class TestABook(unittest.TestCase):
         wd = self.wd
         self.open_main_page(wd)
         self.login(wd, login="admin", password="secret")
-        self.create_contact(wd, Contact(firstname="Иванов", lastname="Иван", middlename="Иванович", title="Менеджер"))
-        self.get_address(wd)
-        self.add_contact_info(wd)
+        self.create_contact(wd)
+        self.add_address(wd,Address(u"Российская Федерация, Тульская обалсть, г. Тула"))
+        self.add_contact_info(wd, Contact(firstname="Иванов", lastname="Иван", middlename="Иванович", title="Менеджер"))
         self.get_main(wd)
         self.logout(wd)
 
     #Добавление информации о контакте
-    def add_contact_info(self, wd):
+    def add_contact_info(self, wd,contact):
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("theform").click()
         wd.find_element_by_name("theform").click()
@@ -55,10 +56,10 @@ class TestABook(unittest.TestCase):
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
 
     #Добавление адреса при заполнении информации о контакте
-    def get_address(self, wd):
+    def add_address(self, wd, address):
         wd.find_element_by_name("address").click()
         wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(u"Россия, Тульская область, г. Тула")
+        wd.find_element_by_name("address").send_keys(address.address)
         wd.find_element_by_xpath("(//input[@name='quickadd'])[2]").click()
 
     #Переход на главную страницу
