@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import unittest
-class TestContact(unittest.TestCase):
+class TestContact:
 
-    def add_contact_info( wd, contact):
+    def add_contact_info(wd, contact):
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("theform").click()
         wd.find_element_by_name("theform").click()

@@ -1,4 +1,3 @@
-
 class TestGroup:
 
     #Переход в группы
