@@ -17,9 +17,9 @@ class Manager:
         self.app.group.create(Group(name="", header="", footer=""))
         self.app.session.logout()
 
-    def add_contact(self):
-        self.app.session.login(username="admin", password="secret")
-        self.app.contact.add(
+    def add_contact(self, app):
+        app.session.login(username="admin", password="secret")
+        app.contact.add(
             Contact(address="Российская Федерация, Тульская обалсть, г. Тула", firstname="Иванов", lastname="Иван",
                     middlename="Иванович", title="Менеджер"))
         self.app.session.logout()
