@@ -18,8 +18,8 @@ class Manager:
         self.app.session.logout()
 
     def add_contact(self):
-        self.session.login(username="admin", password="secret")
-        self.contact.add(
+        self.app.session.login(username="admin", password="secret")
+        self.app.contact.add(
             Contact(address="Российская Федерация, Тульская обалсть, г. Тула", firstname="Иванов", lastname="Иван",
                     middlename="Иванович", title="Менеджер"))
-        self.session.logout()
+        self.app.session.logout()
