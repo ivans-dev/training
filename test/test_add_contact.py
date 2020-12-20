@@ -1,7 +1,7 @@
 import pytest
 
 from selenium.common.exceptions import NoAlertPresentException
-from model.group import Group
+from model.contact import Contact
 from fixture.application import Application
 
 
@@ -20,13 +20,7 @@ def app(request):
     return fixture
 
 
-def test_add_group(app):
+def test_add_contact(app):
     app.session.login(username="admin", password="secret")
-    app.group.create(Group(name=u"Тестовая", header=u"Тестовая Header", footer=u"Тестовая  Footer"))
-    app.session.logout()
-
-
-def test_add_empty_group(app):
-    app.session.login(username="admin", password="secret")
-    app.group.create(Group(name="", header="", footer=""))
+    app.contact.add(Contact(address="Российская Федерация, Тульская обалсть, г. Тула", firstname="Иванов", lastname="Иван", middlename="Иванович", title="Менеджер"))
     app.session.logout()
