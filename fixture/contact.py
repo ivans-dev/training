@@ -48,4 +48,10 @@ class ContactHelper:
 
     def return_to_main_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not (wd.current_url.endswith("/edit.php") and len(wd.find_elements_by_name("firstname")) > 0):
+            wd.find_element_by_link_text("home").click()
+
+    def count(self):
+        wd = self.app.wd
+        self.return_to_main_page()
+        return len(wd.find_elements_by_name("selected[]"))
