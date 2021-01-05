@@ -15,20 +15,22 @@ class GroupHelper:
         self.return_to_groups_page()
 
     def delete_first_group(self):
-        wd = self.app.wd
-        self.open_groups_pages()
-        wd.find_element_by_name("selected[]").click()
+        wd = self.select_first_group()
         wd.find_element_by_xpath("(//input[@name='delete'])[2]").click()
         self.return_to_groups_page()
 
     def edit_first(self, group):
-        wd = self.app.wd
-        self.open_groups_pages()
-        wd.find_element_by_name("selected[]").click()
+        wd = self.select_first_group()
         wd.find_element_by_xpath("(//input[@name='edit'])[2]").click()
         self.group_element(group)
         wd.find_element_by_name("update").click()
         wd.find_element_by_link_text("group page").click()
+
+    def select_first_group(self):
+        wd = self.app.wd
+        self.open_groups_pages()
+        wd.find_element_by_name("selected[]").click()
+        return wd
 
     def return_to_groups_page(self):
         wd = self.app.wd
@@ -36,12 +38,13 @@ class GroupHelper:
 
     def group_element(self, group):
         wd = self.app.wd
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name)
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header)
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        self.change_field_value("group_name", group.name)
+        self.change_field_value("group_header", group.header)
+        self.change_field_value("group_footer", group.footer)
+
+    def change_field_value(self, filed_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(filed_name).click()
+            wd.find_element_by_name(filed_name).clear()
+            wd.find_element_by_name(filed_name).send_keys(text)
