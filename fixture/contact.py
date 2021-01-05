@@ -1,4 +1,3 @@
-
 class ContactHelper:
     def __init__(self, app):
         self.app = app
@@ -29,10 +28,7 @@ class ContactHelper:
         wd.find_element_by_name("update").click()
         self.return_to_main_page()
 
-
-
     def contact_element(self, contact):
-
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("middlename", contact.middlename)
         self.change_field_value("lastname", contact.lastname)
@@ -43,14 +39,12 @@ class ContactHelper:
         self.change_field_value("mobile", contact.mobile)
         self.change_field_value("email", contact.mail)
 
-
     def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text is not None:
             wd.find_element_by_name(field_name).click()
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
-
 
     def return_to_main_page(self):
         wd = self.app.wd
