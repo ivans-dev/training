@@ -16,11 +16,14 @@ class GroupHelper:
         self.return_to_groups_page()
 
     def delete_first_group(self):
+        wd = self.app.wd
+        self.open_groups_pages()
         wd = self.select_first_group()
         wd.find_element_by_xpath("(//input[@name='delete'])[2]").click()
         self.return_to_groups_page()
 
     def edit_first(self, group):
+        wd = self.app.wd
         wd = self.select_first_group()
         wd.find_element_by_xpath("(//input[@name='edit'])[2]").click()
         self.group_element(group)
@@ -38,6 +41,7 @@ class GroupHelper:
         wd.find_element_by_link_text("group page").click()
 
     def group_element(self, group):
+        wd = self.app.wd
         self.change_field_value("group_name", group.name)
         self.change_field_value("group_header", group.header)
         self.change_field_value("group_footer", group.footer)

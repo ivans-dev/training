@@ -4,29 +4,29 @@ class ContactHelper:
 
     def add(self, contact):
         wd = self.app.wd
-        self.return_to_main_page()
+        self.contact_page()
         wd.find_element_by_link_text("add new").click()
         self.contact_element(contact)
         wd.find_element_by_name("theform").click()
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-        self.return_to_main_page()
+        self. return_main_page()
 
     def delete_first(self):
         wd = self.app.wd
-        self.return_to_main_page()
+        self.contact_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
-        self.return_to_main_page()
+        self.return_main_page()
 
     def edit_first(self, contact):
         wd = self.app.wd
-        self.return_to_main_page()
+        self.contact_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.contact_element(contact)
         wd.find_element_by_name("update").click()
-        self.return_to_main_page()
+        self.return_main_page()
 
     def contact_element(self, contact):
         self.change_field_value("firstname", contact.firstname)
@@ -46,12 +46,16 @@ class ContactHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
-    def return_to_main_page(self):
+    def contact_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith("/edit.php") and len(wd.find_elements_by_name("firstname")) > 0):
+        if not len(wd.find_elements_by_xpath("//input[@value='Send e-Mail']")) > 0:
             wd.find_element_by_link_text("home").click()
+
+    def return_main_page(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
 
     def count(self):
         wd = self.app.wd
-        self.return_to_main_page()
+        self.contact_page()
         return len(wd.find_elements_by_name("selected[]"))
