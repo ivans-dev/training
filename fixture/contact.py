@@ -70,8 +70,11 @@ class ContactHelper:
         i = int(wd.find_element_by_id("search_count").text)
         j = 2
         while j <= i:
-            id = wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]").get_attribute("value")
-            firstname = wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[2]").text
-            contact_list.append(Contact(firstname=firstname, id=id))
+            ids = wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[1]").find_element_by_name("selected[]").get_attribute("value")
+            lastname = wd.find_element_by_xpath(
+                "/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[2]").text
+            firstname = wd.find_element_by_xpath(
+                "/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[3]").text
+            contact_list.append(Contact(lastname=lastname, firstname=firstname, id=ids))
             j += 1
         return contact_list
