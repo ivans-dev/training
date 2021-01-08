@@ -1,3 +1,6 @@
+from model.contact import Contact
+
+
 class ContactHelper:
     def __init__(self, app):
         self.app = app
@@ -9,7 +12,7 @@ class ContactHelper:
         self.contact_element(contact)
         wd.find_element_by_name("theform").click()
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-        self. return_main_page()
+        self.return_main_page()
 
     def delete_first(self):
         wd = self.app.wd
@@ -59,3 +62,16 @@ class ContactHelper:
         wd = self.app.wd
         self.contact_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contacts_list(self):
+        wd = self.app.wd
+        self.contact_page()
+        contact_list = []
+        i = int(wd.find_element_by_id("search_count").text)
+        j = 2
+        while j <= i:
+            id = wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]").get_attribute("value")
+            firstname = wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[2]").text
+            contact_list.append(Contact(firstname=firstname, id=id))
+            j += 1
+        return contact_list
