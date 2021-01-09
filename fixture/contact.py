@@ -13,23 +13,35 @@ class ContactHelper:
         wd.find_element_by_name("theform").click()
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.return_main_page()
+        self.contact_cache = None
 
-    def delete_first(self):
+    def select_contact_by_index(self, index):
         wd = self.app.wd
         self.contact_page()
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def delete_first(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
+        wd = self.app.wd
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
         self.return_main_page()
+        self.contact_cache = None
 
-    def edit_first(self, contact):
+    def edit_first(self):
+        self.modify_contact_by_index(0)
+
+    def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
-        self.contact_page()
-        wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.contact_element(contact)
         wd.find_element_by_name("update").click()
         self.return_main_page()
+        self.contact_cache = None
 
     def contact_element(self, contact):
         self.change_field_value("firstname", contact.firstname)
@@ -63,18 +75,25 @@ class ContactHelper:
         self.contact_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contacts_list(self):
-        wd = self.app.wd
-        self.contact_page()
-        contact_list = []
-        i = int(wd.find_element_by_id("search_count").text)
-        j = 2
-        while j <= i:
-            ids = wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[1]").find_element_by_name("selected[]").get_attribute("value")
-            lastname = wd.find_element_by_xpath(
-                "/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[2]").text
-            firstname = wd.find_element_by_xpath(
-                "/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[3]").text
-            contact_list.append(Contact(lastname=lastname, firstname=firstname, id=ids))
-            j += 1
-        return contact_list
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.contact_page()
+            self.contact_cache = []
+            i = int(wd.find_element_by_id("search_count").text)
+            j = 2
+            x = 0
+            while x != i:
+                ids = wd.find_element_by_xpath(
+                    "/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[1]").find_element_by_name(
+                    "selected[]").get_attribute("value")
+                lastname = wd.find_element_by_xpath(
+                    "/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[2]").text
+                firstname = wd.find_element_by_xpath(
+                    "/html/body/div/div[4]/form[2]/table/tbody/tr[" + str(j) + "]/td[3]").text
+                self.contact_cache.append(Contact(lastname=lastname, firstname=firstname, id=ids))
+                j += 1
+                x += 1
+        return list(self.contact_cache)
