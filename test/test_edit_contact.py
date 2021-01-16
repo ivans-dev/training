@@ -5,7 +5,7 @@ from random import randrange
 def test_edit_contact(app):
     contact = Contact(address="Российская Федерация, Тульская обалсть, г. Тула", firstname="Иванов 1",
                       lastname="Иван 1",
-                      middlename="Иванович 1", title="root", nickname="god", company="Сеть", mobile="79100000000",
+                      middlename="Иванович 1", title="root", nickname="god", company="Сеть", mobilephone="79100000000",
                       mail="test123@mail.mil")
     if app.contact.count() == 0:
         app.contact.add(contact)
