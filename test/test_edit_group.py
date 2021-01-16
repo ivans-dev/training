@@ -5,17 +5,17 @@ import string
 
 
 def random_string(prefix, maxlen):
-    symbols = string.ascii_letters + string.digits  + string.punctuation+" " * 10
+    symbols = string.ascii_letters + string.digits + " " * 10
     return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 
 data = [Group(name="", header="", footer="")] + [
     Group(name=random_string("name", 15), header=random_string("header", 23), footer=random_string("footer", 30))
-    for i in range(10)]
+    for i in range(5)]
 
 
 @pytest.mark.parametrize("group", data, ids=[repr(x) for x in data])
-def test_edit_group(app,group):
+def test_edit_group(app, group):
     if app.group.count() == 0:
         app.group.create(group)
     old_groups = app.group.get_group_list()
@@ -26,5 +26,3 @@ def test_edit_group(app,group):
     assert len(old_groups) == len(new_groups)
     old_groups[index] = group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
-
-
