@@ -1,16 +1,10 @@
 from model.group import Group
 import pytest
-import random
-import string
-
-
-def random_string(prefix, maxlen):
-    symbols = string.ascii_letters + string.digits  + string.punctuation+" " * 10
-    return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
-
+from faker import Faker
+fake = Faker('ru_RU')
 
 data = [Group(name="", header="", footer="")] + [
-    Group(name=random_string("name", 15), header=random_string("header", 23), footer=random_string("footer", 30))
+    Group(name=fake.unique.words(), header=fake.unique.words(), footer=fake.unique.words())
     for i in range(10)]
 
 
