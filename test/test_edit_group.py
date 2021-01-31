@@ -1,18 +1,9 @@
 from model.group import Group
-import pytest
 import random
-from faker import Faker
-
-fake = Faker('ru_RU')
-
-data = [Group(name="", header="", footer="")] + [
-    Group(name=fake.unique.words(), header=fake.unique.words(), footer=fake.unique.words())
-    for i in range(10)
-]
 
 
-@pytest.mark.parametrize("group", data, ids=[repr(x) for x in data])
-def test_edit_group(app, group):
+def test_edit_group(app, data_groups):
+    group = data_groups
     if app.group.count() == 0:
         app.group.create(group)
     old_groups = app.group.get_group_list()

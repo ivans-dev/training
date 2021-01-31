@@ -1,30 +1,25 @@
 from model.group import Group
 from faker import Faker
 import os
-import json
-import getopt
-import sys
+import jsonpickle
+import argparse
 
-try:
-    opts, args = getopt.getopt(sys.argv[1:], "n:f", ["number of groups", "file"])
-except getopt.GetoptError as err:
-    getopt.usage()
-    sys.exit(2)
 n = 5
-f = "groups.json"
+f = 'data/groups.json'
+parse = argparse.ArgumentParser(description='Генерация файла с данными для контактов')
+parse.add_argument('-n', type=int, default=n, help='Количество генерируемы данных')
+parse.add_argument('-f', type=str, default=f, help='Имя файла')
 
-for o, a in opts:
-    if o == "-n":
-        n = int(a)
-    elif o == "-f":
-        f = a
-
+my_args = parse.parse_args()
+f = my_args.f
+n = my_args.n
 fake = Faker('ru_RU')
-data = [Group(name="", header="", footer="")] + [
+testdata = [Group(name="", header="", footer="")] + [
     Group(name=fake.unique.name(), header=fake.unique.job(), footer=fake.unique.bs())
     for i in range(n)]
 
-file = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."+f)
+file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", f)
 
-with open(file, "w") as f:
-    f.write(json.dumps(data, default=lambda x: x.__dict__, indent=2))
+with open(file, "w") as out:
+    jsonpickle.set_encoder_options("json", indent=2)
+    out.write(jsonpickle.encode(testdata))

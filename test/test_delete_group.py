@@ -1,18 +1,10 @@
-from model.group import Group
+
 from random import randrange
-from faker import Faker
-import pytest
-
-fake = Faker('ru_RU')
-
-data = [Group(name="", header="", footer="")] + [
-    Group(name=fake.unique.bs(), header=fake.unique.bs(), footer=fake.unique.bs())
-     ]
 
 
-@pytest.mark.parametrize("group", data, ids=[repr(x) for x in data])
-def test_delete_group(app, group):
+def test_delete_group(app, data_groups):
     if app.group.count() == 0:
+        group = data_groups
         app.group.create(group)
     old_groups = app.group.get_group_list()
     index = randrange(len(old_groups))
