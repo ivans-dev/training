@@ -6,7 +6,7 @@ import pytest
 fake = Faker('ru_RU')
 
 data = [Group(name="", header="", footer="")] + [
-    Group(name=fake.unique.words(), header=fake.unique.words(), footer=fake.unique.words())
+    Group(name=fake.unique.bs(), header=fake.unique.bs(), footer=fake.unique.bs())
      ]
 
 

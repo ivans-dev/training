@@ -1,11 +1,6 @@
 from model.group import Group
 import pytest
-from faker import Faker
-fake = Faker('ru_RU')
-
-data = [Group(name="", header="", footer="")] + [
-    Group(name=fake.unique.words(), header=fake.unique.words(), footer=fake.unique.words())
-    for i in range(10)]
+from data.add_group import constant as data
 
 
 @pytest.mark.parametrize("group", data, ids=[repr(x) for x in data])
