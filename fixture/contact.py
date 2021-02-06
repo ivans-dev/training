@@ -23,12 +23,25 @@ class ContactHelper:
         self.contact_page()
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_contact_by_id(self, ids):
+        wd = self.app.wd
+        self.contact_page()
+        wd.find_element_by_css_selector("input[value='%s']" % ids).click()
+
     def delete_first(self):
         self.delete_contact_by_index(0)
 
     def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.select_contact_by_index(index)
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to.alert.accept()
+        self.return_main_page()
+        self.contact_cache = None
+
+    def delete_contact_by_id(self, ids):
+        wd = self.app.wd
+        self.select_contact_by_id(ids)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
         self.return_main_page()
@@ -41,6 +54,15 @@ class ContactHelper:
         wd = self.app.wd
         self.select_contact_by_index(index)
         self.open_contact_to_edit_by_index(index)
+        self.contact_element(contact)
+        wd.find_element_by_name("update").click()
+        self.return_main_page()
+        self.contact_cache = None
+
+    def modify_contact_by_id(self, ids, contact):
+        wd = self.app.wd
+        self.select_contact_by_id(ids)
+        self.open_contact_to_edit_by_id(ids)
         self.contact_element(contact)
         wd.find_element_by_name("update").click()
         self.return_main_page()
@@ -84,6 +106,7 @@ class ContactHelper:
         return len(wd.find_elements_by_name("selected[]"))
 
     def get_contacts_list(self):
+        self.contact_page()
         if self.contact_cache is None:
             wd = self.app.wd
             self.contact_cache = []
@@ -115,6 +138,13 @@ class ContactHelper:
         row = wd.find_elements_by_name("entry")[index]
         cell = row.find_elements_by_tag_name("td")[7]
         cell.find_element_by_tag_name("a").click()
+
+
+    def open_contact_to_edit_by_id(self, ids):
+        wd = self.app.wd
+        self.return_main_page()
+        wd.find_element_by_xpath('//a[@href="'+'edit.php?id='+str(ids)+'"]').click()
+
 
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
