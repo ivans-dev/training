@@ -8,7 +8,7 @@ def test_group_liset(app, db):
     def clean(group):
         return Group(id=group.id, name=group.name.strip())
 
-    db_list = map(clean, db.get_group_list())
+    db_list = map(clean, db.get_groups_list())
     assert sorted(ui_list, key=Group.id_or_max) == sorted(db_list, key=Group.id_or_max)
 
 
@@ -23,5 +23,5 @@ def test_contact_list(app, db):
                        secondaryphone=contact.secondaryphone.strip(), workphone=contact.workphone.strip(),
                        email=contact.email.strip(), email2=contact.email2.strip(), email3=contact.email3.strip())
 
-    db_list = map(clean, db.get_contact_list())
+    db_list = map(clean, db.get_contacts_list())
     assert sorted(ui_list, key=Contact.id_or_max) == sorted(db_list, key=Contact.id_or_max)

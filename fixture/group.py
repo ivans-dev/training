@@ -24,7 +24,6 @@ class GroupHelper:
 
     def delete_group_by_index(self, index):
         wd = self.app.wd
-        self.open_groups_pages()
         self.select_group_by_index(index)
         wd.find_element_by_xpath("(//input[@name='delete'])[2]").click()
         self.return_to_groups_page()
@@ -42,7 +41,6 @@ class GroupHelper:
 
     def modify_group_by_index(self, index, group):
         wd = self.app.wd
-        self.open_groups_pages()
         self.select_group_by_index(index)
         wd.find_element_by_xpath("(//input[@name='edit'])[2]").click()
         self.group_element(group)
@@ -52,7 +50,6 @@ class GroupHelper:
 
     def modify_group_by_id(self, ids, group):
         wd = self.app.wd
-        self.open_groups_pages()
         self.select_group_by_id(ids)
         wd.find_element_by_xpath("(//input[@name='edit'])[2]").click()
         self.group_element(group)
