@@ -39,8 +39,9 @@ class ORMFixture:
                      lazy=True)
 
     def __init__(self, host, name, user, password):
-        self.db.bind('mysql', host=host, database=name, user=user, password=password, conv=decoders)
+        self.db.bind('mysql', host=host, database=name, user=user, password=password)
         self.db.generate_mapping()
+        sql_debug(True)
 
     def convert_groups_to_model(self, groups):
         def convert(group):
@@ -70,13 +71,21 @@ class ORMFixture:
         return self.convert_contacts_to_model(select(c for c in ORMFixture.ORMContact if c.deprecated is None))
 
     @db_session
-    def get_contact_in_group(self, group):
+    def get_contacts_in_group(self, group):
         orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
         return self.convert_contacts_to_model(orm_group.contacts)
 
     @db_session
-    def get_id_contacts(self):
-        return self.convert_contacts_to_model(list(select(c for c in ORMFixture.ORMContact.id if c.deprecated is None)))
+    def get_contacts_not_in_group(self, group):
+        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
+        return self.convert_contacts_to_model(
+            select(c for c in ORMFixture.ORMContact if c.deprecated is None and orm_group not in c.groups))
+
+    def all_contacts_in_all_groups(self, list_groups):
+        for i in list_groups:
+            if len(self.get_contacts_not_in_group(i)) > 0:
+                return False
+        return True
 
     @db_session
     def get_info_contact(self, data, ids):
