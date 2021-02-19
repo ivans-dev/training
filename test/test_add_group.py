@@ -1,6 +1,7 @@
 from model.group import Group
-
-
+import allure
+import pytest
+@allure.stroy("Создание групп")
 def test_add_group(app, db, json_groups, check_ui):
     group = json_groups
     old_groups = db.get_groups_list()
