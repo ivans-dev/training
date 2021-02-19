@@ -17,6 +17,8 @@ class Application:
                 "acceptSslCerts": True,
             }
             self.wd = webdriver.Remote(command_executor=f'http://192.168.88.242:4444/wd/hub', desired_capabilities=capabilities)
+            self.wd.set_window_size(1920, 1080)
+            self.wd.implicitly_wait(10)
 
         elif browser == "ie":
             self.wd = webdriver.Chrome(r'D:\IEDriverServer')

@@ -1,7 +1,7 @@
 {"web": {
     "username": "admin",
     "password": "secret",
-    "baseUrl": "http://192.168.88.240:8081/:8080//addressbook"},
+    "baseUrl": "http://192.168.88.240:8081/addressbook"},
   "db": {
     "host": "192.168.88.240",
     "name": "addressbook",
