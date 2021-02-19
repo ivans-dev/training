@@ -1,4 +1,4 @@
-from pytest_bdd import given, when, then
+import pytest_bdd
 from model.group import Group
 import random
 
