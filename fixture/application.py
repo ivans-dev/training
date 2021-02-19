@@ -2,6 +2,7 @@ from selenium import webdriver
 from fixture.session import SessionHelper
 from fixture.group import GroupHelper
 from fixture.contact import ContactHelper
+import pytest
 
 
 class Application:
@@ -9,7 +10,14 @@ class Application:
         if browser == "firefox":
             self.wd = webdriver.Firefox(r'D:\geckodriver')
         elif browser == "chrome":
-            self.wd = webdriver.Chrome(r'D:\chromedriver')
+            capabilities = {
+                "browserName": 'chrome',
+                "enableVNC": True,
+                "enableVideo": True,
+                "acceptSslCerts": True,
+            }
+            self.wd = webdriver.Remote(command_executor=f'http://192.168.88.242:4444/wd/hub', desired_capabilities=capabilities)
+
         elif browser == "ie":
             self.wd = webdriver.Chrome(r'D:\IEDriverServer')
         else:
