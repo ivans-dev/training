@@ -1,0 +1,5 @@
+FROM python:3.8-alpine
+ENV MODE='selenoid'
+RUN pip3 install allure-pytest pytest pytest-xdist requests selenium pytest pytest_bdd jsonpickle pony pymysql mysql-connector-python-rf
+ADD . /tests
+WORKDIR /tests
